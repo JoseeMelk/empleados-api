@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('empleados', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
+            $table->string('apellidos');
+            $table->string('curp')->unique();
+            $table->string('estado');
+            $table->string('municipio');
+            $table->string('colonia');
             $table->timestamps();
         });
     }
