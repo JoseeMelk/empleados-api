@@ -12,6 +12,6 @@ class Empleado extends Model
         'curp',
         'estado',
         'municipio',
-        'colonia',
+        'localidad',
     ];
 }

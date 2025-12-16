@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('curp')->unique();
             $table->string('estado');
             $table->string('municipio');
-            $table->string('colonia');
+            $table->string('localidad');
             $table->timestamps();
         });
     }
