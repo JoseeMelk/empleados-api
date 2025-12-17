@@ -2,23 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Empleado;
 use Illuminate\Http\Request;
 use App\Http\Requests\Empleado\StoreEmpleadoRequest;
-use App\Services\Ocr\IneOcrCleaner;
-use Exception;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 
 class EmpleadoController extends Controller
 {
-    protected IneOcrCleaner $ineOcrCleaner;
-
-    public function __construct(IneOcrCleaner $ineOcrCleaner)
-    {
-        $this->ineOcrCleaner = $ineOcrCleaner;
-    }
     /**
      * Display a listing of the resource.
      */
@@ -61,31 +53,14 @@ class EmpleadoController extends Controller
         $statusCode = 500;
 
         try {
-            $file = $request->file('ine');
-            $path = $file->store('ines');
-            $imagePath = Storage::path($path);
-
-            $tesseractPath = config('ocr.tesseract_path');
-            $command = sprintf(
-                '%s %s stdout -l spa 2>&1',
-                escapeshellcmd($tesseractPath),
-                escapeshellarg($imagePath)
-            );
-            $output = shell_exec($command . " 2>&1");
-
-
-            $normalizedText = $this->ineOcrCleaner->normalize($output);
-            $curp = $this->ineOcrCleaner->extractCurp($normalizedText);
-            $fullName = $this->ineOcrCleaner->extractFullName($normalizedText);
-            $location = $this->ineOcrCleaner->extractLocation($normalizedText);
-
+            $requestData = $request->validated();
             Empleado::create([
-                'curp' => $curp,
-                'nombre' => $fullName['nombre'],
-                'apellidos' => $fullName['apellidos'],
-                'estado' => $location['estado'],
-                'municipio' => $location['municipio'],
-                'localidad' => $location['localidad'],
+                'curp' => $requestData['curp'],
+                'nombre' => $requestData['nombre'],
+                'apellidos' => $requestData['apellidos'],
+                'estado' => $requestData['estado'],
+                'municipio' => $requestData['municipio'],
+                'localidad' => $requestData['localidad'],
             ]);
 
             $statusCode = 201;

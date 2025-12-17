@@ -24,24 +24,46 @@ class StoreEmpleadoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ine' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'nombre' => 'required|string|max:100',
+            'apellidos' => 'required|string|max:150',
+            'curp' => 'required|string|size:18|unique:empleados,curp',
+            'estado' => 'nullable|string|max:100',
+            'municipio' => 'nullable|string|max:100',
+            'localidad' => 'nullable|string|max:100',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'ine.required' => 'La imagen del INE es obligatoria.',
-            'ine.image' => 'El archivo debe ser una imagen.',
-            'ine.mimes' => 'La imagen debe ser un archivo de tipo: jpeg, png, jpg.',
-            'ine.max' => 'La imagen no debe ser mayor a 2MB.',
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.string' => 'El nombre debe ser una cadena de texto.',
+            'nombre.max' => 'El nombre no debe exceder los 100 caracteres.',
+            'apellidos.required' => 'Los apellidos son obligatorios.',
+            'apellidos.string' => 'Los apellidos deben ser una cadena de texto.',
+            'apellidos.max' => 'Los apellidos no deben exceder los 150 caracteres.',
+            'curp.required' => 'La CURP es obligatoria.',
+            'curp.string' => 'La CURP debe ser una cadena de texto.',
+            'curp.size' => 'La CURP debe tener exactamente 18 caracteres.',
+            'curp.unique' => 'La CURP ya está registrada para otro empleado.',
+            'estado.string' => 'El estado debe ser una cadena de texto.',
+            'estado.max' => 'El estado no debe exceder los 100 caracteres.',
+            'municipio.string' => 'El municipio debe ser una cadena de texto.',
+            'municipio.max' => 'El municipio no debe exceder los 100 caracteres.',
+            'localidad.string' => 'La localidad debe ser una cadena de texto.',
+            'localidad.max' => 'La localidad no debe exceder los 100 caracteres.',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'ine' => 'imagen del INE',
+            'nombre' => 'nombre',
+            'apellidos' => 'apellidos',
+            'curp' => 'CURP',
+            'estado' => 'estado',
+            'municipio' => 'municipio',
+            'localidad' => 'localidad',
         ];
     }
 
