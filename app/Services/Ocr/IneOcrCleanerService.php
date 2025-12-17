@@ -2,7 +2,7 @@
 
 namespace App\Services\Ocr;
 
-class IneOcrCleaner
+class IneOcrCleanerService
 {
     private const ESTADOS_ABR = [
         'AGS' => 'AGUASCALIENTES',

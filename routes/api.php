@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\OcrController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::apiResource('ocr', OcrController::class)->only(['store']);
+Route::apiResource('empleados', EmpleadoController::class)->only(['index', 'store', 'show']);
 
-Route::apiResource('empleados', EmpleadoController::class);
