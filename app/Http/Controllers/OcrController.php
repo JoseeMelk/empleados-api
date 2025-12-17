@@ -42,11 +42,23 @@ class OcrController extends Controller
             $imagePath = Storage::path($path);
 
             $tesseractPath = config('ocr.tesseract_path');
-            $command = sprintf(
-                '%s %s stdout -l spa 2>&1',
-                escapeshellcmd($tesseractPath),
-                escapeshellarg($imagePath)
-            );
+            
+            // En Windows, envolver la ruta completa en comillas
+            $isWindows = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+            if ($isWindows && str_contains($tesseractPath, ' ')) {
+                $command = sprintf(
+                    '"%s" %s stdout -l spa 2>&1',
+                    $tesseractPath,
+                    escapeshellarg($imagePath)
+                );
+            } else {
+                // En Linux sin espacios en la ruta
+                $command = sprintf(
+                    '%s %s stdout -l spa 2>&1',
+                    escapeshellcmd($tesseractPath),
+                    escapeshellarg($imagePath)
+                );
+            }
 
             $output = shell_exec($command);
 
